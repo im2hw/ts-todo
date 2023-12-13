@@ -69,7 +69,7 @@ export default function Todo({ todos, setTodos, isDone }: isDoneProps) {
                   <p>{todo.content}</p>
                 </StContent>
                 <StButtonWrapper>
-                  <button>삭제</button>
+                  <button onClick={() => handleDeleteBtn(todo)}>삭제</button>
                   <button onClick={() => handleClickBtn(todo)}>
                     {todo.isDone ? "취소" : "완료"}
                   </button>
