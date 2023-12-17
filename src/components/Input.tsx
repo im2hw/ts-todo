@@ -1,43 +1,24 @@
 import React from "react";
 import uuid from "react-uuid";
 import styled from "styled-components";
-import { useState } from "react";
+import { useInput } from "../hooks/useInput";
+import { Props, Todos } from "./Main";
 
-type Todos = {
-  id: string;
-  date: string;
-  content: string;
-  isDone: boolean;
-};
-type InputProps = {
-  todos: Todos[];
-  setTodos: React.Dispatch<React.SetStateAction<Todos[]>>; // 검색해볼것
-  isDone: boolean;
-  formatDate: (date: Date) => string;
-};
-
-export default function Input({
-  todos,
-  setTodos,
-  isDone,
-  formatDate,
-}: InputProps) {
-  const [content, setContent] = useState<string>("");
-  const handleChangeContent = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setContent(e.target.value);
-
+export default function Input({ todos, isDone, setTodos, formatDate }: Props) {
+  const { content, onChange, reset } = useInput();
   const handleSubmitButton = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newTodos: Todos = {
+    const newTodo: Todos = {
       id: uuid(),
       date: formatDate(new Date()),
       content,
       isDone,
     };
 
-    setTodos([newTodos, ...todos]);
+    setTodos([newTodo, ...todos]);
 
-    setContent("");
+    // 초기화
+    reset();
   };
   return (
     <StForm onSubmit={handleSubmitButton}>
@@ -45,7 +26,7 @@ export default function Input({
         type="text"
         placeholder="할일을 입력해주세요"
         value={content}
-        onChange={handleChangeContent}
+        onChange={onChange}
       />
       <StButton type="submit">등록</StButton>
     </StForm>
