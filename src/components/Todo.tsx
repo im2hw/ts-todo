@@ -1,20 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { Props, Todos } from "./Main";
+import { useDispatch } from "react-redux";
 
-type Todos = {
-  id: string;
-  date: string;
-  content: string;
-  isDone: boolean;
-};
-
-type isDoneProps = {
-  todos: Todos[];
-  isDone: boolean;
-  setTodos: React.Dispatch<React.SetStateAction<Todos[]>>;
-};
-
-export default function Todo({ todos, setTodos, isDone }: isDoneProps) {
+export default function Todo({ todos, setTodos, isDone }: Props) {
+  const dispatch = useDispatch();
   const handleClickBtn = (clickedTodo: Todos) => {
     const newTodos = todos.map((item) => {
       if (item.id === clickedTodo.id) {
@@ -35,6 +25,7 @@ export default function Todo({ todos, setTodos, isDone }: isDoneProps) {
     });
     setTodos(deleteTodos);
   };
+
   return (
     <StTodoWrapper>
       <StProgressWrapper>
@@ -45,7 +36,7 @@ export default function Todo({ todos, setTodos, isDone }: isDoneProps) {
             return (
               <div key={todo.id} className="todo">
                 <StContent>
-                  <span>{todo.date}</span>
+                  <span>{todo.date.toLocaleString()}</span>
                   <p>{todo.content}</p>
                 </StContent>
                 <StButtonWrapper>
@@ -66,10 +57,11 @@ export default function Todo({ todos, setTodos, isDone }: isDoneProps) {
             return (
               <div key={todo.id} className="todo">
                 <StContent>
+                  <span>{todo.date.toLocaleString()}</span>
                   <p>{todo.content}</p>
                 </StContent>
                 <StButtonWrapper>
-                  <button onClick={() => handleDeleteBtn(todo)}>삭제</button>
+                  <button onClick={() => handleDeleteBtn(todo.id)}>삭제</button>
                   <button onClick={() => handleClickBtn(todo)}>
                     {todo.isDone ? "취소" : "완료"}
                   </button>

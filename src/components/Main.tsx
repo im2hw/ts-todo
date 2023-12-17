@@ -4,18 +4,21 @@ import { useState } from "react";
 import uuid from "react-uuid";
 import Todo from "./Todo";
 
-type Todos = {
+export type Todos = {
   id: string;
-  date: string;
+  date: string | Date;
   content: string;
   isDone: boolean;
 };
 
-type ParentProps = {
+export type Props = {
   todos: Todos[];
-  setTodos: React.Dispatch<React.SetStateAction<Todos[]>>; // 검색해볼것
+  setTodos: React.Dispatch<React.SetStateAction<Todos[]>>;
   isDone: boolean;
+  formatDate: (date: Date) => string;
 };
+
+export type OmitType = Omit<Props, "formatDate">;
 
 const formatDate = (date: Date): string => {
   const year = date.getFullYear();
@@ -36,8 +39,8 @@ export default function Main() {
       isDone: false,
     },
   ]);
-
   const [isDone, setIsDone] = useState<boolean>(false);
+
   return (
     <StMain>
       <Input
@@ -46,7 +49,12 @@ export default function Main() {
         isDone={isDone}
         formatDate={formatDate}
       />
-      <Todo todos={todos} isDone={isDone} setTodos={setTodos} />
+      <Todo
+        todos={todos}
+        isDone={isDone}
+        setTodos={setTodos}
+        formatDate={formatDate}
+      />
     </StMain>
   );
 }
