@@ -1,10 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Props, Todos } from "./Main";
-import { useDispatch } from "react-redux";
 
 export default function Todo({ todos, setTodos, isDone }: Props) {
-  const dispatch = useDispatch();
   const handleClickBtn = (clickedTodo: Todos) => {
     const newTodos = todos.map((item) => {
       if (item.id === clickedTodo.id) {
